@@ -1,15 +1,9 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, constr
 from re import sub
 
 
-class ValidateCpf(BaseModel):
+class Cpf(BaseModel):
     cpf: str
-
-    @validator("cpf", always=True, allow_reuse=True)
-    def convert_cpf(cls, cpf: str):
-        if not isinstance(cpf, str) and isinstance(cpf, int):
-            cpf = str(cpf)
-            return cpf
 
     @validator("cpf", always=True, allow_reuse=True)
     def format_cpf(cls, cpf: str):
@@ -37,11 +31,29 @@ class ValidateCpf(BaseModel):
                 total = 0  # Zera o total
                 cpf_sliced += str(digits)  # Concatena o digito gerado no novo cpf
 
-        sequency = cpf_sliced == str(cpf_sliced[0]) * len(cpf) # Evita sequencias. Ex.: 11111111111, 00000000000...
+        sequency = cpf_sliced == str(cpf_sliced[0]) * len(cpf)  # Evita sequencias. Ex.: 11111111111, 00000000000...
         if not cpf == cpf_sliced or sequency:
             raise ValueError("invalid cpf")
         return cpf
 
 
-a = {"cpf": 00000000000}
-print(ValidateCpf(**a))
+class CelPhone(BaseModel):
+    phone: constr(regex=r"^\+\d+", min_length=5)
+
+
+class IdentifierData(Cpf, CelPhone):
+    cpf = Cpf
+    phone = CelPhone
+
+
+class UserIdentifier(BaseModel):
+    user_identifier: IdentifierData
+
+
+# a = {
+#     "user_identifier": {
+#         "cpf": "41588156818",
+#         "phone": "+5511952945737",
+#     }
+# }
+# print(UserIdentifier(**a).dict())

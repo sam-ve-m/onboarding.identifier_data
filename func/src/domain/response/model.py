@@ -1,4 +1,4 @@
-# Jormungandr
+# Jormungandr - Onboarding
 from ...domain.enums.code import InternalCode
 
 # Standards
