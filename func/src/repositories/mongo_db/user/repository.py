@@ -23,7 +23,7 @@ class UserRepository(MongoDbBaseRepository):
             raise ex
 
     @classmethod
-    async def find_one_user(cls, unique_id: str) -> dict:
+    async def find_one_by_unique_id(cls, unique_id: str) -> dict:
         collection = await cls._get_collection()
         try:
             user = await collection.find_one({"unique_id": unique_id})

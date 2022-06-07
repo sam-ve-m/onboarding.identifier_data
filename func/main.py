@@ -47,17 +47,23 @@ async def user_identifier_data():
         ).build_http_response(status=HTTPStatus.UNAUTHORIZED)
         return response
 
+    except ValueError:
+        response = ResponseModel(
+            success=False, code=InternalCode.INVALID_PARAMS, message="Invalid params"
+        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
+        return response
+
     except UserUniqueIdNotExists as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
-            success=False, code=InternalCode.DATA_NOT_FOUND, message='msg_error'
-        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
+            success=False, code=InternalCode.DATA_NOT_FOUND, message=msg_error
+        ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return response
 
     except CpfAlreadyExists as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
-            success=False, code=InternalCode.DATA_ALREADY_EXISTS, message='msg_error'
+            success=False, code=InternalCode.DATA_ALREADY_EXISTS, message='Cpf already exists'
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
 
@@ -78,7 +84,7 @@ async def user_identifier_data():
     except Exception as ex:
         Gladsheim.error(error=ex)
         response = ResponseModel(
-            success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message="Unexpected error occurred"
+            success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message=msg_error
         ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return response
 

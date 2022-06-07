@@ -1,7 +1,8 @@
-from ..repositories.mongo_db.user.repository import UserRepository
+# Jormungandr - Onboarding
 from ..domain.exceptions import CpfAlreadyExists, UserUniqueIdNotExists, ErrorOnUpdateUser
-from ..transports.audit.transport import Audit
 from ..domain.identifier_data.model import UserIdentifierDataModel
+from ..repositories.mongo_db.user.repository import UserRepository
+from ..transports.audit.transport import Audit
 
 
 class ServiceUserIdentifierData:
@@ -26,7 +27,7 @@ class ServiceUserIdentifierData:
         result = await UserRepository.find_one_by_cpf(cpf=self.user_identifier.cpf)
         if result:
             raise CpfAlreadyExists
-        user = await UserRepository.find_one_user(unique_id=self.user_identifier.unique_id)
+        user = await UserRepository.find_one_by_unique_id(unique_id=self.user_identifier.unique_id)
         if not user:
             raise UserUniqueIdNotExists
 
