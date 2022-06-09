@@ -20,28 +20,39 @@ class Cpf(BaseModel):
         total = 0
 
         for index in range(19):
-            if index > 8:  # Primeiro índice vai de 0 a 9,
-                index -= 9  # São os 9 primeiros digitos do CPF
-            total += int(cpf_last_digits[index]) * cont_reversed  # Valor total da multiplicação
-            cont_reversed -= 1  # Decrementa o contador cont_reversed
+            if index > 8:
+                index -= 9
+            total += int(cpf_last_digits[index]) * cont_reversed
+            cont_reversed -= 1
 
             if cont_reversed < 2:
                 cont_reversed = 11
                 digits = 11 - (total % 11)
 
-                if digits > 9:  # Se o digito for > que 9 o valor é 0
+                if digits > 9:
                     digits = 0
-                total = 0  # Zera o total
-                cpf_last_digits += str(digits)  # Concatena o digito gerado no novo cpf
+                total = 0
+                cpf_last_digits += str(digits)
 
-        sequency = cpf_last_digits == str(cpf_last_digits[0]) * len(cpf)  # Evita sequencias. Ex.: 11111111111, 00000000000...
-        if not cpf == cpf_last_digits or sequency:
+        sequence = cpf_last_digits == str(cpf_last_digits[0]) * len(cpf)
+        if not cpf == cpf_last_digits or sequence:
             raise ValueError("invalid cpf")
         return cpf
 
 
 class CelPhone(BaseModel):
-    phone: constr(regex=r"^\+\d+", min_length=5)
+    phone: constr(regex=r"^\+\d+")
+
+    @validator("phone", always=True, allow_reuse=True)
+    def format_phone(cls, phone: str):
+        phone = sub(r"[^0-9\+]", "", phone)
+        return phone
+
+    @validator("phone")
+    def validate_length(cls, phone: str):
+        if 13 <= len(phone) <= 14:
+            return phone
+        raise ValueError
 
 
 class IdentifierData(Cpf, CelPhone):
@@ -51,12 +62,3 @@ class IdentifierData(Cpf, CelPhone):
 
 class UserIdentifier(BaseModel):
     user_identifier: IdentifierData
-
-
-# a = {
-#     "user_identifier": {
-#         "cpf": "41588156818",
-#         "phone": "+5511952945737",
-#     }
-# }
-# print(UserIdentifier(**a).dict())

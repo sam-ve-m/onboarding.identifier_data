@@ -10,17 +10,9 @@ from http import HTTPStatus
 
 # Third party
 from etria_logger import Gladsheim
-from flask import request, Flask
-from asgiref.wsgi import WsgiToAsgi
-# from hypercorn.config import Config
-# from hypercorn.asyncio import serve
-# import asyncio
-
-# app = Flask(__name__)
-# asgi_app = WsgiToAsgi(app)
+from flask import request
 
 
-# @app.route('/identifier_data', methods=['POST'])
 async def user_identifier_data():
     jwt = request.headers.get("x-thebes-answer")
     raw_user_identifier_data = request.json
@@ -87,6 +79,3 @@ async def user_identifier_data():
             success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message=msg_error
         ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return response
-
-
-# asyncio.run(serve(asgi_app, Config()))
