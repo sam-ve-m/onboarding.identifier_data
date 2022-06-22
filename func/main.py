@@ -1,6 +1,8 @@
 # Jormungandr - Onboarding
-from src.domain.exceptions import ErrorOnUpdateUser, UserUniqueIdNotExists, CpfAlreadyExists, ErrorOnDecodeJwt,ErrorOnSendAuditLog
-from src.domain.response.model import ResponseModel, InternalCode
+from src.domain.exceptions import (CpfAlreadyExists, ErrorOnDecodeJwt,
+                                   ErrorOnSendAuditLog, ErrorOnUpdateUser,
+                                   UserUniqueIdNotExists)
+from src.domain.response.model import InternalCode, ResponseModel
 from src.domain.validators.user_identifier_data import UserIdentifier
 from src.services.jwt import JwtService
 from src.services.user_identifier_data import ServiceUserIdentifierData
@@ -39,12 +41,6 @@ async def user_identifier_data():
         ).build_http_response(status=HTTPStatus.UNAUTHORIZED)
         return response
 
-    except ValueError:
-        response = ResponseModel(
-            success=False, code=InternalCode.INVALID_PARAMS, message="Invalid params"
-        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
-        return response
-
     except UserUniqueIdNotExists as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
@@ -71,6 +67,12 @@ async def user_identifier_data():
         response = ResponseModel(
             success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message=msg_error
         ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
+        return response
+
+    except ValueError:
+        response = ResponseModel(
+            success=False, code=InternalCode.INVALID_PARAMS, message="Invalid params"
+        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
 
     except Exception as ex:
