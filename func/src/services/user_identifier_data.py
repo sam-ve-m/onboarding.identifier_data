@@ -32,7 +32,7 @@ class ServiceUserIdentifierData:
             raise UserUniqueIdNotExists
 
     async def step_validator(self):
-        #TODO: Chamar fission quando estiver pronta
+        #TODO Chamar fission quando estiver pronta
         """await UserService.onboarding_br_step_validator(
             payload=payload, onboard_step=["user_identifier_data_step"]
         )"""

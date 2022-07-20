@@ -18,9 +18,9 @@ from flask import request
 async def user_identifier_data():
     jwt = request.headers.get("x-thebes-answer")
     raw_user_identifier_data = request.json
-    unique_id = await JwtService.decode_jwt_and_get_unique_id(jwt=jwt)
     msg_error = "Unexpected error occurred"
     try:
+        unique_id = await JwtService.decode_jwt_and_get_unique_id(jwt=jwt)
         identifier_data_validated = UserIdentifier(**raw_user_identifier_data).dict()
         service_user = ServiceUserIdentifierData(
             identifier_data_validated=identifier_data_validated,
@@ -37,15 +37,15 @@ async def user_identifier_data():
     except ErrorOnDecodeJwt as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
-            success=False, code=InternalCode.JWT_INVALID, message=msg_error
+            success=False, code=InternalCode.JWT_INVALID, message='Invalid token'
         ).build_http_response(status=HTTPStatus.UNAUTHORIZED)
         return response
 
     except UserUniqueIdNotExists as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
-            success=False, code=InternalCode.DATA_NOT_FOUND, message=msg_error
-        ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
+            success=False, code=InternalCode.DATA_NOT_FOUND, message='User not exists'
+        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
 
     except CpfAlreadyExists as ex:
