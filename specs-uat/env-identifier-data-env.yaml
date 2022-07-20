@@ -31,13 +31,13 @@ spec:
             - name: ASGI_FRAMEWORK
               value: "HYPERCORN"
             - name: PERSEPHONE_COMPLEMENTARY_DATA_SCHEMA
-              value: "user_identifier_data_schema"
+              value: "user_complementary_data_schema"
             - name: PERSEPHONE_TOPIC_USER
               value: "sphinx-persephone.user.crud"
             - name: PERSEPHONE_KAFKA_BROKERS
               value: "cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
             - name: MONGO_CONNECTION_URL
-              value: "mongodb://jormungandr:LIwn1In32LdowPqma@172.30.10.75:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary"
+              value: "mongodb://jormungandr:MMhsdanNNds32Malmnwqyrte@172.30.18.223:41000,172.30.19.240:41000,172.30.19.71:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary&ssl=false"
             - name: MONGODB_DATABASE_NAME
               value: "lionx"
             - name: MONGODB_USER_COLLECTION
@@ -51,9 +51,9 @@ spec:
             - name: HEIMDALL_REGION_NAME
               value: "sa-east-1"
             - name: HEIMDALL_BUCKET_NAME_KEY
-              value: "auth-gateway-keys-dev"
+              value: "auth-gateway-keys-uat"
             - name: HEIMDALL_JWT_REQUIRED_FIELDS
               value: "[]"
             - name: HEIMDALL_REDIS_URL
-              value: "redis://heimdal:LLOnmUUffhaUHnewIz@172.30.11.235:6379?db=1"
+              value: "redis://heimdal:FBJAnjkqw21yjewkDSA@172.30.19.183:6379?db=1"
   version: 2
