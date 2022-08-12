@@ -4,7 +4,7 @@ class UserIdentifierDataModel:
         self.cpf = identifier_data_validated["user_identifier"].get("cpf")
         self.phone = identifier_data_validated["user_identifier"].get("phone")
 
-    def get_audit_template(self) -> dict:
+    async def get_audit_template(self) -> dict:
         user_identifier_template = {
             "cpf": self.cpf,
             "cel_phone": self.phone,
@@ -12,10 +12,10 @@ class UserIdentifierDataModel:
         }
         return user_identifier_template
 
-    def get_user_identifier_template(self):
+    async def get_user_identifier_template(self):
         user_identifier_template = {
             "phone": self.phone,
             "unique_id": self.unique_id,
-            "identifier_document": {"cpf": self.cpf}
+            "identifier_document": {"cpf": self.cpf},
         }
         return user_identifier_template

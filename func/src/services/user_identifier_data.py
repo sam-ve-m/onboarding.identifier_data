@@ -1,25 +1,40 @@
 # Jormungandr - Onboarding
-from ..domain.exceptions import CpfAlreadyExists, UserUniqueIdNotExists, ErrorOnUpdateUser
+from ..domain.enums.types import UserOnboardingStep
+from ..domain.exceptions.exceptions import (
+    CpfAlreadyExists,
+    UserUniqueIdNotExists,
+    ErrorOnUpdateUser,
+    InvalidOnboardingCurrentStep,
+)
 from ..domain.identifier_data.model import UserIdentifierDataModel
 from ..repositories.mongo_db.user.repository import UserRepository
 from ..transports.audit.transport import Audit
+from ..transports.onboarding_steps.transport import OnboardingSteps
 
 
 class ServiceUserIdentifierData:
-
     def __init__(self, identifier_data_validated: dict, unique_id: str):
         self.user_identifier = UserIdentifierDataModel(
-            identifier_data_validated=identifier_data_validated,
-            unique_id=unique_id
+            identifier_data_validated=identifier_data_validated, unique_id=unique_id
         )
+
+    @staticmethod
+    async def validate_current_onboarding_step(jwt: str) -> bool:
+        user_current_step = await OnboardingSteps.get_user_current_step(jwt=jwt)
+        if not user_current_step == UserOnboardingStep.IDENTIFIER_DATA:
+            raise InvalidOnboardingCurrentStep
+        return True
 
     async def register_identifier_data(self):
         await Audit.register_user_log(self.user_identifier)
+        user_identifier_template = (
+            await self.user_identifier.get_user_identifier_template()
+        )
         user_updated = await UserRepository.update_one_with_user_identifier_data(
             unique_id=self.user_identifier.unique_id,
-            user_identifier_data=self.user_identifier.get_user_identifier_template()
+            user_identifier_template=user_identifier_template,
         )
-        if not user_updated.acknowledged:
+        if not user_updated.matched_count:
             raise ErrorOnUpdateUser
         return True
 
@@ -27,13 +42,8 @@ class ServiceUserIdentifierData:
         result = await UserRepository.find_one_by_cpf(cpf=self.user_identifier.cpf)
         if result:
             raise CpfAlreadyExists
-        user = await UserRepository.find_one_by_unique_id(unique_id=self.user_identifier.unique_id)
+        user = await UserRepository.find_one_by_unique_id(
+            unique_id=self.user_identifier.unique_id
+        )
         if not user:
             raise UserUniqueIdNotExists
-
-    async def step_validator(self):
-        #TODO Chamar fission quando estiver pronta
-        """await UserService.onboarding_br_step_validator(
-            payload=payload, onboard_step=["user_identifier_data_step"]
-        )"""
-        pass
