@@ -3,7 +3,6 @@ from ..base_repository.base import MongoDbBaseRepository
 
 # Third party
 from etria_logger import Gladsheim
-from decouple import config
 
 
 class UserRepository(MongoDbBaseRepository):
@@ -33,7 +32,7 @@ class UserRepository(MongoDbBaseRepository):
 
     @classmethod
     async def update_one_with_user_identifier_data(
-        cls, unique_id: dict, user_identifier_template
+        cls, unique_id: str, user_identifier_template: dict
     ):
         collection = await cls._get_collection()
         try:

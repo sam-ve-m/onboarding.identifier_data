@@ -1,6 +1,6 @@
 # Jormungandr - Onboarding
 from func.src.domain.validators.user_identifier_data import Cpf, CelPhone
-from .stubs import (
+from tests.src.services.identifier_data.stubs import (
     stub_cpf,
     stub_cpf_invalid,
     stub_cpf_10,

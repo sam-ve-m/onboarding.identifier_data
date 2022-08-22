@@ -28,7 +28,7 @@ async def user_identifier_data() -> Response:
     msg_error = "Unexpected error occurred"
     try:
         unique_id = await JwtService.decode_jwt_and_get_unique_id(jwt=jwt)
-        identifier_data_validated = UserIdentifier(**raw_user_identifier_data).dict()
+        identifier_data_validated = UserIdentifier(**raw_user_identifier_data)
         service_user = ServiceUserIdentifierData(
             identifier_data_validated=identifier_data_validated, unique_id=unique_id
         )

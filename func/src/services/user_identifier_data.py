@@ -7,13 +7,14 @@ from ..domain.exceptions.exceptions import (
     InvalidOnboardingCurrentStep,
 )
 from ..domain.identifier_data.model import UserIdentifierDataModel
+from ..domain.validators.user_identifier_data import UserIdentifier
 from ..repositories.mongo_db.user.repository import UserRepository
 from ..transports.audit.transport import Audit
 from ..transports.onboarding_steps.transport import OnboardingSteps
 
 
 class ServiceUserIdentifierData:
-    def __init__(self, identifier_data_validated: dict, unique_id: str):
+    def __init__(self, identifier_data_validated: UserIdentifier, unique_id: str):
         self.user_identifier = UserIdentifierDataModel(
             identifier_data_validated=identifier_data_validated, unique_id=unique_id
         )
@@ -25,7 +26,7 @@ class ServiceUserIdentifierData:
             raise InvalidOnboardingCurrentStep
         return True
 
-    async def register_identifier_data(self):
+    async def register_identifier_data(self) -> bool:
         await Audit.register_user_log(self.user_identifier)
         user_identifier_template = (
             await self.user_identifier.get_user_identifier_template()
@@ -38,7 +39,7 @@ class ServiceUserIdentifierData:
             raise ErrorOnUpdateUser
         return True
 
-    async def verify_cpf_and_unique_id_exists(self):
+    async def verify_cpf_and_unique_id_exists(self) -> bool:
         result = await UserRepository.find_one_by_cpf(cpf=self.user_identifier.cpf)
         if result:
             raise CpfAlreadyExists
@@ -47,3 +48,4 @@ class ServiceUserIdentifierData:
         )
         if not user:
             raise UserUniqueIdNotExists
+        return True

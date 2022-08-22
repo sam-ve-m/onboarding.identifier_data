@@ -1,6 +1,9 @@
 # Jormungandr - Onboarding
 from func.src.services.user_identifier_data import ServiceUserIdentifierData
-from tests.src.stubs import stub_identifier_data_validated, stub_unique_id
+from tests.src.services.identifier_data.stubs import (
+    stub_identifier_data_validated,
+    stub_unique_id,
+)
 
 # Third party
 from pytest import fixture
