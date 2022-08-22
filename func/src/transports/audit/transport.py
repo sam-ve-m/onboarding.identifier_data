@@ -13,7 +13,7 @@ class Audit:
     audit_client = Persephone
 
     @classmethod
-    async def register_user_log(cls, user_model: UserIdentifierDataModel):
+    async def record_message_log(cls, user_model: UserIdentifierDataModel) -> bool:
         partition = QueueTypes.USER_IDENTIFIER_DATA
         topic = config("PERSEPHONE_TOPIC_USER")
         schema_name = config("PERSEPHONE_USER_IDENTIFIER_SCHEMA")
@@ -32,3 +32,4 @@ class Audit:
                 message="Audit::register_user_log::Error on trying to register log"
             )
             raise ErrorOnSendAuditLog
+        return True

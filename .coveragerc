@@ -2,6 +2,7 @@
 omit =
     */main.py
     func/src/domain/enums/*
+    func/src/domain/validators/*
     func/src/domain/exceptions/*
     func/src/domain/response/*
     func/src/infrastructures/*

@@ -27,7 +27,7 @@ class ServiceUserIdentifierData:
         return True
 
     async def register_identifier_data(self) -> bool:
-        await Audit.register_user_log(self.user_identifier)
+        await Audit.record_message_log(self.user_identifier)
         user_identifier_template = (
             await self.user_identifier.get_user_identifier_template()
         )
