@@ -1,14 +1,14 @@
 include:
 - ./func/*
 kind: ArchiveUploadSpec
-name: func-mdHW
+name: func-U4Pt
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: identifier-data-fn-fd9a0540-0b79-4ac0-80ec-27ad9a3a3dad
+  name: identifier-data-fn-783948d0-1fe5-4792-9116-5c638a133d92
   namespace: default
 spec:
   deployment:
@@ -19,10 +19,10 @@ spec:
   source:
     checksum: {}
     type: url
-    url: archive://func-mdHW
+    url: archive://func-U4Pt
 status:
   buildstatus: pending
-  lastUpdateTimestamp: "2022-07-20T03:35:08Z"
+  lastUpdateTimestamp: "2022-08-25T17:25:20Z"
 
 ---
 apiVersion: fission.io/v1
@@ -38,7 +38,7 @@ spec:
       MaxScale: 1
       MinScale: 1
       SpecializationTimeout: 120
-      TargetCPUPercent: 0
+      TargetCPUPercent: 80
     StrategyType: execution
   concurrency: 500
   environment:
@@ -49,7 +49,7 @@ spec:
   package:
     functionName: main.user_identifier_data
     packageref:
-      name: identifier-data-fn-fd9a0540-0b79-4ac0-80ec-27ad9a3a3dad
+      name: identifier-data-fn-783948d0-1fe5-4792-9116-5c638a133d92
       namespace: default
   requestsPerPod: 1
   resources: {}

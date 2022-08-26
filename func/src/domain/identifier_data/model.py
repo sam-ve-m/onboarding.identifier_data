@@ -12,6 +12,7 @@ class UserIdentifierDataModel:
             "cpf": self.cpf,
             "cel_phone": self.phone,
             "unique_id": self.unique_id,
+            "tax_residences": [],
         }
         return user_identifier_template
 
