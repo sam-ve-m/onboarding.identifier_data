@@ -9,12 +9,12 @@ class Cpf(BaseModel):
     cpf: str
 
     @validator("cpf", always=True, allow_reuse=True)
-    def format_cpf(cls, cpf: str):
+    def format_cpf(cls, cpf: str) -> str:
         cpf = sub("[^0-9]", "", cpf)
         return cpf
 
     @validator("cpf", always=True, allow_reuse=True)
-    def validate_cpf(cls, cpf: str):
+    def validate_cpf(cls, cpf: str) -> str:
         cpf_last_digits = cpf[:-2]
         cont_reversed = 10
         total = 0
@@ -44,12 +44,12 @@ class CelPhone(BaseModel):
     phone: constr(regex=r"^\+\d+")
 
     @validator("phone", always=True, allow_reuse=True)
-    def format_phone(cls, phone: str):
+    def format_phone(cls, phone: str) -> str:
         phone = sub(r"[^0-9\+]", "", phone)
         return phone
 
     @validator("phone")
-    def validate_length(cls, phone: str):
+    def validate_length(cls, phone: str) -> str:
         if 13 <= len(phone) <= 14:
             return phone
         raise ValueError

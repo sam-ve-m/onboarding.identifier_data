@@ -1,6 +1,18 @@
 # Jormungandr - Onboarding
 from func.src.domain.validators.user_identifier_data import Cpf, CelPhone
-from . stubs import stub_cpf, stub_cpf_invalid, stub_cpf_10, stub_cpf_9, stub_cpf_12, stub_cpf_13, stub_phone_7, stub_phone_9, stub_phone_10, stub_phone_8, stub_phone_without_plus
+from tests.src.services.identifier_data.stubs import (
+    stub_cpf,
+    stub_cpf_invalid,
+    stub_cpf_10,
+    stub_cpf_9,
+    stub_cpf_12,
+    stub_cpf_13,
+    stub_phone_7,
+    stub_phone_9,
+    stub_phone_10,
+    stub_phone_8,
+    stub_phone_without_plus,
+)
 
 # Third party
 import pytest

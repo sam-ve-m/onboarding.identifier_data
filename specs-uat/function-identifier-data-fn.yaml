@@ -1,0 +1,55 @@
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-r0ta
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: identifier-data-fn-0e074bde-bc59-473f-b5a5-5fd3b736be6a
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: identifier-data-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-r0ta
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-07-20T03:55:17Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: identifier-data-fn
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 1
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 80
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: identifier-data-env
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.user_identifier_data
+    packageref:
+      name: identifier-data-fn-0e074bde-bc59-473f-b5a5-5fd3b736be6a
+      namespace: default
+  requestsPerPod: 1
+  resources: {}
