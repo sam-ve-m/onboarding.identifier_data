@@ -18,6 +18,6 @@ spec:
     tls: ""
   method: ""
   methods:
-  - PUT
+  - POST
   prefix: ""
   relativeurl: /onboarding/identifier_data
