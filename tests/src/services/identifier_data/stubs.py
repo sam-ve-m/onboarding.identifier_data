@@ -8,7 +8,9 @@ class UserUpdated:
 
 
 stub_identifier_data = {
-    "user_identifier": {"cpf": "000.326.050-05", "phone": "+5511952945557"}
+    "user_identifier": {"cpf": "000.326.050-05", "phone": "+5511952945557"},
+    "tax_residences": [],
+    "us_person": False,
 }
 stub_unique_id = "40db7fee-6d60-4d73-824f-1bf87edc4491"
 stub_identifier_data_validated = UserIdentifier(**stub_identifier_data)
