@@ -1,5 +1,6 @@
 # Standards
 from re import sub
+from typing import List, Optional
 
 # Third party
 from pydantic import BaseModel, validator, constr
@@ -48,11 +49,16 @@ class CelPhone(BaseModel):
         phone = sub(r"[^0-9\+]", "", phone)
         return phone
 
-    @validator("phone")
+    @validator("phone", always=True, allow_reuse=True)
     def validate_length(cls, phone: str) -> str:
         if 13 <= len(phone) <= 14:
             return phone
         raise ValueError
+
+
+class TaxResidence(BaseModel):
+    country: constr(min_length=3, max_length=3)
+    tax_number: str
 
 
 class IdentifierData(Cpf, CelPhone):
@@ -62,3 +68,5 @@ class IdentifierData(Cpf, CelPhone):
 
 class UserIdentifier(BaseModel):
     user_identifier: IdentifierData
+    tax_residences: List[TaxResidence]
+    us_person: Optional[bool]
