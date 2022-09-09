@@ -41,12 +41,12 @@ def test_when_cpf_9_digits_then_raises():
 
 
 def test_when_cpf_12_digits_then_raises():
-    with pytest.raises(ValueError):
+    with pytest.raises(IndexError):
         Cpf(**stub_cpf_12)
 
 
 def test_when_cpf_13_digits_then_raises():
-    with pytest.raises(ValueError):
+    with pytest.raises(IndexError):
         Cpf(**stub_cpf_13)
 
 

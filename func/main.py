@@ -1,4 +1,6 @@
 # Jormungandr - Onboarding
+from pydantic import ValidationError
+
 from src.domain.exceptions.exceptions import (
     CpfAlreadyExists,
     ErrorOnDecodeJwt,
@@ -63,7 +65,7 @@ async def user_identifier_data() -> Response:
         response = ResponseModel(
             success=False,
             code=InternalCode.ONBOARDING_STEP_INCORRECT,
-            message="User is not in identifier_data step",
+            message="User is not in correct step",
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
 
@@ -108,7 +110,7 @@ async def user_identifier_data() -> Response:
         ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return response
 
-    except ValueError:
+    except (ValueError, ValidationError):
         response = ResponseModel(
             success=False, code=InternalCode.INVALID_PARAMS, message="Invalid params"
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
