@@ -11,3 +11,9 @@ class QueueTypes(IntEnum):
 
 class UserOnboardingStep(StrEnum):
     IDENTIFIER_DATA = "identifier_data"
+
+
+class CpfValidationStatus(StrEnum):
+    SENT = "ENVIADO"
+
+

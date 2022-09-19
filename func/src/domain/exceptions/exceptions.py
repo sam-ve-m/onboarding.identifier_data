@@ -24,6 +24,12 @@ class ErrorOnUpdateUser(Exception):
     )
 
 
+class ErrorSendingToIaraValidateCPF(Exception):
+    msg = (
+        "Jormungandr-Onboarding::user_identifier_data::Error on trying to send CPF to Iara Validate"
+    )
+
+
 class OnboardingStepsStatusCodeNotOk(Exception):
     msg = "Jormungandr-Onboarding::get_user_current_step::Error when trying to get onboarding steps br"
 
