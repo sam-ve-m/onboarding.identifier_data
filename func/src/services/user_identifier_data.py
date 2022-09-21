@@ -10,6 +10,7 @@ from ..domain.identifier_data.model import UserIdentifierDataModel
 from ..domain.validators.user_identifier_data import UserIdentifier
 from ..repositories.mongo_db.user.repository import UserRepository
 from ..transports.audit.transport import Audit
+from ..transports.caf.transport import BureauApiTransport
 from ..transports.onboarding_steps.transport import OnboardingSteps
 
 
@@ -20,11 +21,13 @@ class ServiceUserIdentifierData:
         )
 
     @staticmethod
-    async def validate_current_onboarding_step(jwt: str) -> bool:
+    async def validate_current_onboarding_step(jwt: str):
         user_current_step = await OnboardingSteps.get_user_current_step(jwt=jwt)
         if not user_current_step == UserOnboardingStep.IDENTIFIER_DATA:
             raise InvalidOnboardingCurrentStep
-        return True
+
+    async def start_bureau_validation(self):
+        await BureauApiTransport.create_transaction(self.user_identifier)
 
     async def register_identifier_data(self) -> bool:
         await Audit.record_message_log(self.user_identifier)
@@ -39,7 +42,7 @@ class ServiceUserIdentifierData:
             raise ErrorOnUpdateUser
         return True
 
-    async def verify_cpf_and_unique_id_exists(self) -> bool:
+    async def verify_cpf_and_unique_id_exists(self):
         result = await UserRepository.find_one_by_cpf(cpf=self.user_identifier.cpf)
         if result:
             raise CpfAlreadyExists
@@ -48,4 +51,3 @@ class ServiceUserIdentifierData:
         )
         if not user:
             raise UserUniqueIdNotExists
-        return True

@@ -6,10 +6,12 @@ from func.src.domain.exceptions.exceptions import (
     ErrorOnUpdateUser,
     InvalidOnboardingCurrentStep,
 )
+from src.services.user_identifier_data import ServiceUserIdentifierData
+from src.transports.caf.transport import BureauApiTransport
 from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
 
 # Standards
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 # Third party
 import pytest
@@ -24,12 +26,11 @@ import pytest
     "func.src.services.user_identifier_data.UserRepository.find_one_by_cpf",
     return_value=False,
 )
-async def test_when_verify_cpf_and_unique_id_has_valid_conditions_then_return_true(
+async def test_when_verify_cpf_and_unique_id_has_valid_conditions_then_return_none(
     mock_find_cpf, mock_find_unique_id, service_identifier_data
 ):
     result = await service_identifier_data.verify_cpf_and_unique_id_exists()
-
-    assert result is True
+    assert result is None
 
 
 @pytest.mark.asyncio
@@ -116,6 +117,14 @@ async def test_when_register_success_then_return_true(
 
 
 @pytest.mark.asyncio
+@patch.object(BureauApiTransport, "create_transaction")
+async def test_start_bureau_validation(mocked_transport):
+    dummy_value = "value"
+    await ServiceUserIdentifierData.start_bureau_validation(MagicMock(user_identifier=dummy_value))
+    mocked_transport.assert_called_once_with(dummy_value)
+
+
+@pytest.mark.asyncio
 @patch(
     "func.src.services.user_identifier_data.UserRepository.update_one_with_user_identifier_data",
     return_value=stub_user_updated,
@@ -140,12 +149,11 @@ async def test_when_register_success_then_mock_was_called(
     "func.src.services.user_identifier_data.OnboardingSteps.get_user_current_step",
     return_value="identifier_data",
 )
-async def test_when_current_step_correct_then_return_true(
+async def test_when_current_step_correct_then_return_none(
     mock_onboarding_steps, service_identifier_data
 ):
     result = await service_identifier_data.validate_current_onboarding_step(jwt="123")
-
-    assert result is True
+    assert result is None
 
 
 @pytest.mark.asyncio
