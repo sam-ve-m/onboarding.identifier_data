@@ -1,20 +1,18 @@
-# Jormungandr - Onboarding
-from func.src.domain.exceptions.exceptions import (
-    CpfAlreadyExists,
-    UserUniqueIdNotExists,
-    ErrorOnSendAuditLog,
-    ErrorOnUpdateUser,
-    InvalidOnboardingCurrentStep,
-)
-from src.services.user_identifier_data import ServiceUserIdentifierData
-from src.transports.caf.transport import BureauApiTransport
-from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
-
-# Standards
+import decouple
 from unittest.mock import patch, MagicMock
-
-# Third party
 import pytest
+
+with patch.object(decouple, "config"):
+    from func.src.domain.exceptions.exceptions import (
+        CpfAlreadyExists,
+        UserUniqueIdNotExists,
+        ErrorOnSendAuditLog,
+        ErrorOnUpdateUser,
+        InvalidOnboardingCurrentStep,
+    )
+    from src.services.user_identifier_data import ServiceUserIdentifierData
+    from src.transports.caf.transport import BureauApiTransport
+    from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
 
 
 @pytest.mark.asyncio
@@ -120,7 +118,9 @@ async def test_when_register_success_then_return_true(
 @patch.object(BureauApiTransport, "create_transaction")
 async def test_start_bureau_validation(mocked_transport):
     dummy_value = "value"
-    await ServiceUserIdentifierData.start_bureau_validation(MagicMock(user_identifier=dummy_value))
+    await ServiceUserIdentifierData.start_bureau_validation(
+        MagicMock(user_identifier=dummy_value)
+    )
     mocked_transport.assert_called_once_with(dummy_value)
 
 

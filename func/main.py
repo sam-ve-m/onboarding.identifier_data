@@ -9,7 +9,9 @@ from src.domain.exceptions.exceptions import (
     UserUniqueIdNotExists,
     OnboardingStepsStatusCodeNotOk,
     InvalidOnboardingCurrentStep,
-    ErrorOnGetUniqueId, ErrorSendingToIaraValidateCPF,
+    ErrorOnGetUniqueId,
+    ErrorSendingToIaraValidateCPF,
+    UsPersonNotAllowed,
 )
 from src.domain.response.model import InternalCode, ResponseModel
 from src.domain.validators.user_identifier_data import UserIdentifier
@@ -97,7 +99,11 @@ async def user_identifier_data() -> Response:
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
 
-    except (ErrorOnUpdateUser, ErrorOnSendAuditLog, ErrorSendingToIaraValidateCPF) as ex:
+    except (
+        ErrorOnUpdateUser,
+        ErrorOnSendAuditLog,
+        ErrorSendingToIaraValidateCPF,
+    ) as ex:
         Gladsheim.error(error=ex, message=ex.msg)
         response = ResponseModel(
             success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message=msg_error
@@ -109,7 +115,13 @@ async def user_identifier_data() -> Response:
             success=False, code=InternalCode.INVALID_PARAMS, message="Invalid params"
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
-
+    except UsPersonNotAllowed:
+        response = ResponseModel(
+            success=False,
+            code=InternalCode.INVALID_PARAMS,
+            message="US Person not allowed",
+        ).build_http_response(status=HTTPStatus.BAD_REQUEST)
+        return response
     except Exception as ex:
         Gladsheim.error(error=ex)
         response = ResponseModel(
