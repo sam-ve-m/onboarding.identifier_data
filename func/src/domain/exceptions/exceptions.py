@@ -24,6 +24,10 @@ class ErrorOnUpdateUser(Exception):
     )
 
 
+class ErrorSendingToIaraValidateCPF(Exception):
+    msg = "Jormungandr-Onboarding::user_identifier_data::Error on trying to send CPF to Iara Validate"
+
+
 class OnboardingStepsStatusCodeNotOk(Exception):
     msg = "Jormungandr-Onboarding::get_user_current_step::Error when trying to get onboarding steps br"
 
@@ -34,3 +38,7 @@ class InvalidOnboardingCurrentStep(Exception):
 
 class ErrorOnGetUniqueId(Exception):
     msg = "Jormungandr-Onboarding::get_unique_id::Fail when trying to get unique_id"
+
+
+class UsPersonNotAllowed(Exception):
+    msg = "Jormungandr-Onboarding::user_cant_be_us_person::Fail when trying to get unique_id"
