@@ -18,10 +18,13 @@ class UserIdentifierDataModel:
     def _create_foreign_account_tax_composition(
         tax_residences: List[TaxResidence],
     ) -> List[dict]:
-        tax_residence_list = [{
-            "country": tax_residence.country,
-            "tax_number": tax_residence.tax_number,
-        } for tax_residence in tax_residences]
+        tax_residence_list = [
+            {
+                "country": tax_residence.country,
+                "tax_number": tax_residence.tax_number,
+            }
+            for tax_residence in tax_residences
+        ]
         return tax_residence_list
 
     async def get_audit_template(self) -> dict:
@@ -40,6 +43,6 @@ class UserIdentifierDataModel:
             "identifier_document": {"cpf": self.cpf},
             "tax_residences": self.tax_residences,
             "us_person": self.us_person,
-            "bureau_validations.cpf": CpfValidationStatus.SENT.value
+            "bureau_validations.cpf": CpfValidationStatus.SENT.value,
         }
         return user_identifier_template

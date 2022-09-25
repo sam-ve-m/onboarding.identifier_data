@@ -5,6 +5,8 @@ from typing import List, Optional
 # Third party
 from pydantic import BaseModel, validator, constr
 
+from ..exceptions.exceptions import UsPersonNotAllowed
+
 
 class Cpf(BaseModel):
     cpf: str
@@ -19,15 +21,19 @@ class Cpf(BaseModel):
         if len(cpf) != 11:
             raise IndexError("invalid cpf")
 
-        first_digit_validation = sum(int(cpf[index]) * (10-index) for index in range(9))
+        first_digit_validation = sum(
+            int(cpf[index]) * (10 - index) for index in range(9)
+        )
         mod_first_digit = first_digit_validation % 11
-        first_digit = 11-mod_first_digit if mod_first_digit > 1 else 0
+        first_digit = 11 - mod_first_digit if mod_first_digit > 1 else 0
         if str(first_digit) != cpf[-2]:
             raise ValueError("invalid cpf")
 
-        second_digit_validation = first_digit_validation + sum(map(int, cpf[:9])) + 2*first_digit
+        second_digit_validation = (
+            first_digit_validation + sum(map(int, cpf[:9])) + 2 * first_digit
+        )
         mod_second_digit = second_digit_validation % 11
-        second_digit = 11-mod_second_digit if mod_second_digit > 1 else 0
+        second_digit = 11 - mod_second_digit if mod_second_digit > 1 else 0
         if str(second_digit) != cpf[-1]:
             raise ValueError(f"invalid cpf")
 
@@ -63,3 +69,9 @@ class UserIdentifier(BaseModel):
     user_identifier: IdentifierData
     tax_residences: List[TaxResidence] = []
     us_person: Optional[bool]
+
+    @validator("us_person")
+    def user_cant_be_us_person(cls, value):
+        if value is True:
+            raise UsPersonNotAllowed()
+        return value

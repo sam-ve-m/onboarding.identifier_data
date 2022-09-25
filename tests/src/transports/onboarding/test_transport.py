@@ -1,16 +1,15 @@
-# Jormungandr - Onboarding
-from func.src.domain.exceptions.exceptions import OnboardingStepsStatusCodeNotOk
-from func.src.transports.onboarding_steps.transport import OnboardingSteps
-from tests.src.transports.onboarding.stubs import (
-    stub_request_success,
-    stub_request_failure,
-)
-
-# Standards
 from unittest.mock import patch
 
-# Third party
+import decouple
 import pytest
+
+with patch.object(decouple, "config"):
+    from func.src.domain.exceptions.exceptions import OnboardingStepsStatusCodeNotOk
+    from func.src.transports.onboarding_steps.transport import OnboardingSteps
+    from tests.src.transports.onboarding.stubs import (
+        stub_request_success,
+        stub_request_failure,
+    )
 
 
 @pytest.mark.asyncio

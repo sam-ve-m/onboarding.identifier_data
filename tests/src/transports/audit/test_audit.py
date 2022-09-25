@@ -1,13 +1,12 @@
-# Jormungandr - Onboarding
-from func.src.domain.exceptions.exceptions import ErrorOnSendAuditLog
-from func.src.transports.audit.transport import Audit
-from tests.src.services.identifier_data.stubs import stub_identifier_model
-
-# Standards
 from unittest.mock import patch
 
-# Third party
+import decouple
 import pytest
+
+with patch.object(decouple, "config"):
+    from func.src.domain.exceptions.exceptions import ErrorOnSendAuditLog
+    from func.src.transports.audit.transport import Audit
+    from tests.src.services.identifier_data.stubs import stub_identifier_model
 
 
 @pytest.mark.asyncio
