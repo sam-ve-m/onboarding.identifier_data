@@ -19,7 +19,7 @@ class Cpf(BaseModel):
     @validator("cpf", always=True, allow_reuse=True)
     def validate_cpf(cls, cpf: str) -> str:
         if len(cpf) != 11:
-            raise IndexError("invalid cpf")
+            raise ValueError("invalid cpf")
 
         first_digit_validation = sum(
             int(cpf[index]) * (10 - index) for index in range(9)
