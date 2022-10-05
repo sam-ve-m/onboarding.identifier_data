@@ -10,8 +10,7 @@ with patch.object(decouple, "config"):
         ErrorOnUpdateUser,
         InvalidOnboardingCurrentStep,
     )
-    from src.services.user_identifier_data import ServiceUserIdentifierData
-    from src.transports.caf.transport import BureauApiTransport
+    from func.src.transports.caf.transport import BureauApiTransport
     from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
 
 
@@ -115,23 +114,14 @@ async def test_when_register_success_then_return_true(
 
 
 @pytest.mark.asyncio
-@patch.object(BureauApiTransport, "create_transaction")
-async def test_start_bureau_validation(mocked_transport):
-    dummy_value = "value"
-    await ServiceUserIdentifierData.start_bureau_validation(
-        MagicMock(user_identifier=dummy_value)
-    )
-    mocked_transport.assert_called_once_with(dummy_value)
-
-
-@pytest.mark.asyncio
 @patch(
     "func.src.services.user_identifier_data.UserRepository.update_one_with_user_identifier_data",
     return_value=stub_user_updated,
 )
 @patch("func.src.services.user_identifier_data.Audit.record_message_log")
+@patch.object(BureauApiTransport, "create_transaction")
 async def test_when_register_success_then_mock_was_called(
-    mock_persephone, mock_update, service_identifier_data
+    mocked_transp, mock_persephone, mock_update, service_identifier_data
 ):
     await service_identifier_data.register_identifier_data()
     mock_persephone.assert_called_once_with(service_identifier_data.user_identifier)
@@ -142,6 +132,7 @@ async def test_when_register_success_then_mock_was_called(
         unique_id=stub_identifier_model.unique_id,
         user_identifier_template=user_identifier_template,
     )
+    mocked_transp.assert_called_once_with(service_identifier_data.user_identifier)
 
 
 @pytest.mark.asyncio

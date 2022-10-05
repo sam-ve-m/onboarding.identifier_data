@@ -38,7 +38,6 @@ async def user_identifier_data() -> Response:
         )
         await service_user.validate_current_onboarding_step(jwt=jwt)
         await service_user.verify_cpf_and_unique_id_exists()
-        await service_user.start_bureau_validation()
         success = await service_user.register_identifier_data()
         response = ResponseModel(
             success=success,

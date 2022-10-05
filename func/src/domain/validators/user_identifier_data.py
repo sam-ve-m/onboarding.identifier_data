@@ -50,7 +50,7 @@ class CelPhone(BaseModel):
 
     @validator("phone", always=True, allow_reuse=True)
     def validate_length(cls, phone: str) -> str:
-        if 13 <= len(phone) <= 14:
+        if len(phone) == 14:
             return phone
         raise ValueError
 
