@@ -14,4 +14,4 @@ class UserOnboardingStep(StrEnum):
 
 
 class CpfValidationStatus(StrEnum):
-    SENT = "ENVIADO"
+    QUEUED = "QUEUED"

@@ -33,22 +33,22 @@ def test_when_cpf_invalid_then_raises():
 
 
 def test_when_cpf_10_digits_then_raises():
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         Cpf(**stub_cpf_10)
 
 
 def test_when_cpf_9_digits_then_raises():
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         Cpf(**stub_cpf_9)
 
 
 def test_when_cpf_12_digits_then_raises():
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         Cpf(**stub_cpf_12)
 
 
 def test_when_cpf_13_digits_then_raises():
-    with pytest.raises(IndexError):
+    with pytest.raises(ValueError):
         Cpf(**stub_cpf_13)
 
 
@@ -59,11 +59,9 @@ def test_when_valid_cel_phone_then_proceed():
     assert phone_validated.get("phone") == "+5511952945557"
 
 
-def test_when_valid_residential_phone_then_proceed():
-    phone_validated = CelPhone(**stub_phone_8).dict()
-
-    assert isinstance(phone_validated, dict)
-    assert phone_validated.get("phone") == "+5511952945557"
+def test_when_phone_8_digits_then_raises():
+    with pytest.raises(ValueError):
+        CelPhone(**stub_phone_8)
 
 
 def test_when_phone_7_digits_then_raises():

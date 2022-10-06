@@ -43,6 +43,6 @@ class UserIdentifierDataModel:
             "identifier_document": {"cpf": self.cpf},
             "tax_residences": self.tax_residences,
             "us_person": self.us_person,
-            "bureau_validations.cpf": CpfValidationStatus.SENT.value,
+            "bureau_validations.cpf": CpfValidationStatus.QUEUED.value
         }
         return user_identifier_template

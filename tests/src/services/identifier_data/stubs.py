@@ -28,5 +28,5 @@ stub_cpf_13 = {"cpf": "000.3263.0540-05"}
 stub_phone_without_plus = {"phone": "551195294-5777"}
 stub_phone_10 = {"phone": "+5511.9529.4.55577"}
 stub_phone_9 = {"phone": "+5511-95294-5557"}
-stub_phone_8 = {"phone": "+5511-95294-5557"}
+stub_phone_8 = {"phone": "+5511-9529-5557"}
 stub_phone_7 = {"phone": "+5511-95245-55"}
