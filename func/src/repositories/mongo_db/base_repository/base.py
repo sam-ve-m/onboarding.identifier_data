@@ -13,7 +13,7 @@ class MongoDbBaseRepository(ABC):
 
     @staticmethod
     @abstractmethod
-    def __set_collection(mongo_client: AsyncIOMotorClient) -> Collection:
+    def _set_collection(mongo_client: AsyncIOMotorClient) -> Collection:
         pass
 
     @classmethod
@@ -21,7 +21,7 @@ class MongoDbBaseRepository(ABC):
     def _get_collection(cls):
         mongo_client = cls.infra.get_client()
         try:
-            collection = cls.__set_collection(mongo_client)
+            collection = cls._set_collection(mongo_client)
             yield collection
         except Exception as error:
             message = 'MongoDbBaseRepository::collection::error on operating collection'

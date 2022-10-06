@@ -1,4 +1,6 @@
 from decouple import config
+from motor.core import Collection
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from ..base_repository.base import MongoDbBaseRepository
 
@@ -6,7 +8,7 @@ from ..base_repository.base import MongoDbBaseRepository
 class UserRepository(MongoDbBaseRepository):
 
     @staticmethod
-    def __set_collection(mongo_client):
+    def _set_collection(mongo_client: AsyncIOMotorClient) -> Collection:
         database = mongo_client[config("MONGODB_DATABASE_NAME")]
         collection = database[config("MONGODB_USER_COLLECTION")]
         return collection

@@ -55,7 +55,7 @@ class ServiceUserIdentifierData:
 
     async def verify_cpf_is_in_blocklist(self):
         is_defaulter = await BlockListRepository.is_cpf_in_block_list(
-            verification_data=datetime.utcnow().timestamp(),
+            verification_data=datetime.utcnow(),
             cpf=self.user_identifier.cpf,
         )
         if is_defaulter:
