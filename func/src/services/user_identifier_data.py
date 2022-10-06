@@ -26,9 +26,6 @@ class ServiceUserIdentifierData:
         if not user_current_step == UserOnboardingStep.IDENTIFIER_DATA:
             raise InvalidOnboardingCurrentStep
 
-    async def start_bureau_validation(self):
-        await BureauApiTransport.create_transaction(self.user_identifier)
-
     async def register_identifier_data(self) -> bool:
         await Audit.record_message_log(self.user_identifier)
         user_identifier_template = (
@@ -40,6 +37,7 @@ class ServiceUserIdentifierData:
         )
         if not user_updated.matched_count:
             raise ErrorOnUpdateUser
+        await BureauApiTransport.create_transaction(self.user_identifier)
         return True
 
     async def verify_cpf_and_unique_id_exists(self):
