@@ -8,7 +8,7 @@ class MongoDBInfrastructure:
     client = None
 
     @classmethod
-    def get_client(cls):
+    def get_client(cls) -> AsyncIOMotorClient:
         if cls.client is None:
             try:
                 url = config("MONGO_CONNECTION_URL")

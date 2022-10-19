@@ -35,6 +35,10 @@ spec:
               value: "lionx"
             - name: MONGODB_USER_COLLECTION
               value: "users"
+            - name: MONGODB_POSEIDON_DATABASE_NAME
+              value: "poseidon"
+            - name: MONGODB_BLOCKLIST_COLLECTION
+              value: "list_defaulters_sinacor"
             - name: HEIMDALL_FILE_BUCKET_NAME
               value: "heimdall_rsa"
             - name: HEIMDALL_AWS_ACCESS_KEY_ID

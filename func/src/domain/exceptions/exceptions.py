@@ -9,6 +9,10 @@ class CpfAlreadyExists(Exception):
     msg = "Jormungandr-Onboarding::user_identifier_data::Cpf already exists"
 
 
+class CpfBlocked(Exception):
+    msg = "Jormungandr-Onboarding::user_identifier_data::Cpf blocked"
+
+
 class UserUniqueIdNotExists(Exception):
     msg = "Jormungandr-Onboarding::user_identifier_data::Not exists an user with this unique_id"
 
