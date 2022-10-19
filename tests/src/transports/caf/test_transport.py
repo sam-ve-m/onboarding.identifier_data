@@ -1,12 +1,16 @@
 from unittest.mock import MagicMock, patch
 
-import decouple
 import pytest
-from iara_client import Iara
+from decouple import Config, RepositoryEnv
+import logging.config
 
-with patch.object(decouple, "config"):
-    from src.domain.exceptions.exceptions import ErrorSendingToIaraValidateCPF
-    from src.transports.caf.transport import BureauApiTransport
+with patch.object(logging.config, "dictConfig"):
+    with patch.object(Config, "__call__"):
+        with patch.object(Config, "__init__", return_value=None):
+            with patch.object(RepositoryEnv, "__init__", return_value=None):
+                from src.domain.exceptions.exceptions import ErrorSendingToIaraValidateCPF
+                from src.transports.caf.transport import BureauApiTransport
+                from iara_client import Iara
 
 stub_user = MagicMock()
 

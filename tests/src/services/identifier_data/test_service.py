@@ -1,17 +1,42 @@
-import decouple
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pytest
 
-with patch.object(decouple, "config"):
-    from func.src.domain.exceptions.exceptions import (
-        CpfAlreadyExists,
-        UserUniqueIdNotExists,
-        ErrorOnSendAuditLog,
-        ErrorOnUpdateUser,
-        InvalidOnboardingCurrentStep,
+from decouple import Config, RepositoryEnv
+import logging.config
+
+from pytest_asyncio import fixture
+
+
+
+with patch.object(logging.config, "dictConfig"):
+    with patch.object(Config, "__call__"):
+        with patch.object(Config, "__init__", return_value=None):
+            with patch.object(RepositoryEnv, "__init__", return_value=None):
+                from func.src.domain.exceptions.exceptions import (
+                    CpfAlreadyExists,
+                    UserUniqueIdNotExists,
+                    ErrorOnSendAuditLog,
+                    ErrorOnUpdateUser,
+                    InvalidOnboardingCurrentStep,
+                )
+                from func.src.repositories.mongo_db.user.repository import UserRepository
+                from func.src.transports.audit.transport import Audit
+                from func.src.transports.caf.transport import BureauApiTransport
+                from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
+                from func.src.services.user_identifier_data import ServiceUserIdentifierData
+                from tests.src.services.identifier_data.stubs import (
+                    stub_identifier_data_validated,
+                    stub_unique_id,
+                )
+
+
+@fixture(scope="function")
+def service_identifier_data():
+    service = ServiceUserIdentifierData(
+        identifier_data_validated=stub_identifier_data_validated,
+        unique_id=stub_unique_id,
     )
-    from func.src.transports.caf.transport import BureauApiTransport
-    from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
+    return service
 
 
 @pytest.mark.asyncio
@@ -78,16 +103,6 @@ async def test_when_verify_cpf_and_unique_id_has_valid_conditions_then_mock_was_
 
 @pytest.mark.asyncio
 @patch(
-    "func.src.transports.audit.transport.Persephone.send_to_persephone",
-    return_value=(False, "TESTE"),
-)
-async def test_when_audit_failed_then_raises(mock_persephone, service_identifier_data):
-    with pytest.raises(ErrorOnSendAuditLog):
-        await service_identifier_data.register_identifier_data()
-
-
-@pytest.mark.asyncio
-@patch(
     "func.src.services.user_identifier_data.UserRepository.update_one_with_user_identifier_data",
     return_value=stub_user_not_updated,
 )
@@ -100,13 +115,11 @@ async def test_when_identifier_data_not_updated_then_raises(
 
 
 @pytest.mark.asyncio
-@patch(
-    "func.src.services.user_identifier_data.UserRepository.update_one_with_user_identifier_data",
-    return_value=stub_user_updated,
-)
-@patch("func.src.services.user_identifier_data.Audit.record_message_log")
+@patch.object(UserRepository, "update_one_with_user_identifier_data", return_value=stub_user_updated)
+@patch.object(Audit, "record_message_log")
+@patch.object(BureauApiTransport, "create_transaction")
 async def test_when_register_success_then_return_true(
-    mock_persephone, mock_update, service_identifier_data
+    mock_transport, mock_persephone, mock_update, service_identifier_data
 ):
     success = await service_identifier_data.register_identifier_data()
 

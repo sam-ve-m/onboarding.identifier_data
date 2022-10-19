@@ -1,19 +1,23 @@
 from unittest.mock import patch
-
-import decouple
 import pytest
 
-with patch.object(decouple, "config"):
-    from func.src.domain.exceptions.exceptions import (
-        ErrorOnDecodeJwt,
-        ErrorOnGetUniqueId,
-    )
-    from func.src.services.jwt import JwtService
-    from tests.src.services.jwt.stubs import (
-        stub_heimdall_response,
-        stub_heimdall_response_failure,
-        stub_heimdall_with_no_content,
-    )
+from decouple import Config, RepositoryEnv
+import logging.config
+
+with patch.object(logging.config, "dictConfig"):
+    with patch.object(Config, "__call__"):
+        with patch.object(Config, "__init__", return_value=None):
+            with patch.object(RepositoryEnv, "__init__", return_value=None):
+                from func.src.domain.exceptions.exceptions import (
+                    ErrorOnDecodeJwt,
+                    ErrorOnGetUniqueId,
+                )
+                from func.src.services.jwt import JwtService
+                from tests.src.services.jwt.stubs import (
+                    stub_heimdall_response,
+                    stub_heimdall_response_failure,
+                    stub_heimdall_with_no_content,
+                )
 
 
 @pytest.mark.asyncio
