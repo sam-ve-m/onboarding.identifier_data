@@ -11,7 +11,7 @@ from src.domain.exceptions.exceptions import (
     InvalidOnboardingCurrentStep,
     ErrorOnGetUniqueId,
     ErrorSendingToIaraValidateCPF,
-    UsPersonNotAllowed,
+    UsPersonNotAllowed, CpfBlocked,
 )
 from src.domain.response.model import InternalCode, ResponseModel
 from src.domain.validators.user_identifier_data import UserIdentifier
@@ -38,6 +38,7 @@ async def user_identifier_data() -> Response:
         )
         await service_user.validate_current_onboarding_step(jwt=jwt)
         await service_user.verify_cpf_and_unique_id_exists()
+        await service_user.verify_cpf_is_in_blocklist()
         success = await service_user.register_identifier_data()
         response = ResponseModel(
             success=success,
@@ -120,6 +121,13 @@ async def user_identifier_data() -> Response:
             code=InternalCode.INVALID_PARAMS,
             message="US Person not allowed",
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
+        return response
+    except CpfBlocked:
+        response = ResponseModel(
+            success=False,
+            code=InternalCode.INVALID_PARAMS,
+            message="Invalid Cpf",
+        ).build_http_response(status=HTTPStatus.UNAUTHORIZED)
         return response
     except Exception as ex:
         Gladsheim.error(error=ex)
