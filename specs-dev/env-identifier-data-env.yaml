@@ -23,7 +23,7 @@ spec:
               value: "INFO"
             - name: ASGI_FRAMEWORK
               value: "HYPERCORN"
-            - name: PERSEPHONE_COMPLEMENTARY_DATA_SCHEMA
+            - name: PERSEPHONE_USER_IDENTIFIER_SCHEMA
               value: "user_identifier_data_schema"
             - name: PERSEPHONE_TOPIC_USER
               value: "sphinx-persephone.user.crud"
