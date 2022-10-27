@@ -15,3 +15,8 @@ class UserOnboardingStep(StrEnum):
 
 class CpfValidationStatus(StrEnum):
     QUEUED = "QUEUED"
+
+
+class UserOrigins(StrEnum):
+    LIGA = "liga"
+

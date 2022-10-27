@@ -1,6 +1,6 @@
 from typing import List
 
-from ..enums.types import CpfValidationStatus
+from ..enums.types import CpfValidationStatus, UserOrigins
 from ..validators.user_identifier_data import UserIdentifier, TaxResidence
 
 
@@ -43,6 +43,7 @@ class UserIdentifierDataModel:
             "identifier_document": {"cpf": self.cpf},
             "tax_residences": self.tax_residences,
             "us_person": self.us_person,
-            "bureau_validations.cpf": CpfValidationStatus.QUEUED.value
+            "bureau_validations.cpf": CpfValidationStatus.QUEUED.value,
+            "origin": UserOrigins.LIGA.value,
         }
         return user_identifier_template
