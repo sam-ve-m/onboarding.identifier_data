@@ -107,8 +107,9 @@ async def test_when_verify_cpf_and_unique_id_has_valid_conditions_then_mock_was_
     return_value=stub_user_not_updated,
 )
 @patch("func.src.services.user_identifier_data.Audit.record_message_log")
+@patch("func.src.services.user_identifier_data.BureauApiTransport.create_transaction")
 async def test_when_identifier_data_not_updated_then_raises(
-    mock_persephone, mock_update, service_identifier_data
+    mock_iara, mock_persephone, mock_update, service_identifier_data
 ):
     with pytest.raises(ErrorOnUpdateUser):
         await service_identifier_data.register_identifier_data()
