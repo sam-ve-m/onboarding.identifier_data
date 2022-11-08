@@ -34,13 +34,13 @@ class ServiceUserIdentifierData:
         user_identifier_template = (
             await self.user_identifier.get_user_identifier_template()
         )
-        await BureauApiTransport.create_transaction(self.user_identifier)
         user_updated = await UserRepository.update_one_with_user_identifier_data(
             unique_id=self.user_identifier.unique_id,
             user_identifier_template=user_identifier_template,
         )
         if not user_updated.matched_count:
             raise ErrorOnUpdateUser()
+        await BureauApiTransport.create_transaction(self.user_identifier)
         return True
 
     async def verify_cpf_and_unique_id_exists(self):
