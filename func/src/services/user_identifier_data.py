@@ -1,4 +1,3 @@
-# Jormungandr - Onboarding
 from datetime import datetime
 
 from ..domain.enums.types import UserOnboardingStep
@@ -10,6 +9,7 @@ from ..domain.exceptions.exceptions import (
     CpfBlocked,
 )
 from ..domain.identifier_data.model import UserIdentifierDataModel
+from ..domain.models.device_info import DeviceInfo
 from ..domain.validators.user_identifier_data import UserIdentifier
 from ..repositories.mongo_db.blocklist.repository import BlockListRepository
 from ..repositories.mongo_db.user.repository import UserRepository
@@ -19,9 +19,16 @@ from ..transports.onboarding_steps.transport import OnboardingSteps
 
 
 class ServiceUserIdentifierData:
-    def __init__(self, identifier_data_validated: UserIdentifier, unique_id: str):
+    def __init__(
+        self,
+        identifier_data_validated: UserIdentifier,
+        unique_id: str,
+        device_info: DeviceInfo,
+    ):
         self.user_identifier = UserIdentifierDataModel(
-            identifier_data_validated=identifier_data_validated, unique_id=unique_id
+            identifier_data_validated=identifier_data_validated,
+            unique_id=unique_id,
+            device_info=device_info,
         )
 
     @staticmethod

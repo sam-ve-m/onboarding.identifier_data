@@ -1,5 +1,6 @@
 from func.src.domain.validators.user_identifier_data import UserIdentifier
 from func.src.domain.identifier_data.model import UserIdentifierDataModel
+from func.src.domain.models.device_info import DeviceInfo
 
 
 class UserUpdated:
@@ -14,8 +15,11 @@ stub_identifier_data = {
 }
 stub_unique_id = "40db7fee-6d60-4d73-824f-1bf87edc4491"
 stub_identifier_data_validated = UserIdentifier(**stub_identifier_data)
+stub_device_info = DeviceInfo({"precision": 1}, "")
 stub_identifier_model = UserIdentifierDataModel(
-    identifier_data_validated=stub_identifier_data_validated, unique_id=stub_unique_id
+    identifier_data_validated=stub_identifier_data_validated,
+    unique_id=stub_unique_id,
+    device_info=stub_device_info,
 )
 stub_user_not_updated = UserUpdated(matched_count=0)
 stub_user_updated = UserUpdated(matched_count=1)

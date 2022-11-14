@@ -46,3 +46,11 @@ class ErrorOnGetUniqueId(Exception):
 
 class UsPersonNotAllowed(Exception):
     msg = "Jormungandr-Onboarding::user_cant_be_us_person::Fail when trying to get unique_id"
+
+
+class DeviceInfoRequestFailed(Exception):
+    msg = "Error trying to get device info"
+
+
+class DeviceInfoNotSupplied(Exception):
+    msg = "Device info not supplied"

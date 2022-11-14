@@ -27,6 +27,7 @@ with patch.object(logging.config, "dictConfig"):
                     stub_identifier_model,
                     stub_user_not_updated,
                     stub_user_updated,
+                    stub_device_info,
                 )
                 from func.src.services.user_identifier_data import (
                     ServiceUserIdentifierData,
@@ -42,6 +43,7 @@ def service_identifier_data():
     service = ServiceUserIdentifierData(
         identifier_data_validated=stub_identifier_data_validated,
         unique_id=stub_unique_id,
+        device_info=stub_device_info,
     )
     return service
 
