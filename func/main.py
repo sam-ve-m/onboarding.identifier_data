@@ -11,7 +11,8 @@ from src.domain.exceptions.exceptions import (
     InvalidOnboardingCurrentStep,
     ErrorOnGetUniqueId,
     ErrorSendingToIaraValidateCPF,
-    UsPersonNotAllowed, CpfBlocked,
+    UsPersonNotAllowed,
+    CpfBlocked,
 )
 from src.domain.response.model import InternalCode, ResponseModel
 from src.domain.validators.user_identifier_data import UserIdentifier

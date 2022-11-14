@@ -24,7 +24,7 @@ class MongoDbBaseRepository(ABC):
             collection = cls._set_collection(mongo_client)
             yield collection
         except Exception as error:
-            message = 'MongoDbBaseRepository::collection::error on operating collection'
+            message = "MongoDbBaseRepository::collection::error on operating collection"
             Gladsheim.error(error=error, message=message)
             raise error
         finally:

@@ -19,4 +19,3 @@ class CpfValidationStatus(StrEnum):
 
 class UserOrigins(StrEnum):
     LIGA = "liga"
-

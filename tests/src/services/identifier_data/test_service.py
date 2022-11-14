@@ -7,7 +7,6 @@ import logging.config
 from pytest_asyncio import fixture
 
 
-
 with patch.object(logging.config, "dictConfig"):
     with patch.object(Config, "__call__"):
         with patch.object(Config, "__init__", return_value=None):
@@ -19,11 +18,19 @@ with patch.object(logging.config, "dictConfig"):
                     ErrorOnUpdateUser,
                     InvalidOnboardingCurrentStep,
                 )
-                from func.src.repositories.mongo_db.user.repository import UserRepository
+                from func.src.repositories.mongo_db.user.repository import (
+                    UserRepository,
+                )
                 from func.src.transports.audit.transport import Audit
                 from func.src.transports.caf.transport import BureauApiTransport
-                from .stubs import stub_identifier_model, stub_user_not_updated, stub_user_updated
-                from func.src.services.user_identifier_data import ServiceUserIdentifierData
+                from .stubs import (
+                    stub_identifier_model,
+                    stub_user_not_updated,
+                    stub_user_updated,
+                )
+                from func.src.services.user_identifier_data import (
+                    ServiceUserIdentifierData,
+                )
                 from tests.src.services.identifier_data.stubs import (
                     stub_identifier_data_validated,
                     stub_unique_id,
@@ -115,7 +122,11 @@ async def test_when_identifier_data_not_updated_then_raises(
 
 
 @pytest.mark.asyncio
-@patch.object(UserRepository, "update_one_with_user_identifier_data", return_value=stub_user_updated)
+@patch.object(
+    UserRepository,
+    "update_one_with_user_identifier_data",
+    return_value=stub_user_updated,
+)
 @patch.object(Audit, "record_message_log")
 @patch.object(BureauApiTransport, "create_transaction")
 async def test_when_register_success_then_return_true(

@@ -6,7 +6,8 @@ from ..domain.exceptions.exceptions import (
     CpfAlreadyExists,
     UserUniqueIdNotExists,
     ErrorOnUpdateUser,
-    InvalidOnboardingCurrentStep, CpfBlocked,
+    InvalidOnboardingCurrentStep,
+    CpfBlocked,
 )
 from ..domain.identifier_data.model import UserIdentifierDataModel
 from ..domain.validators.user_identifier_data import UserIdentifier
