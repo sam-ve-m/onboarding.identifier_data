@@ -1,11 +1,12 @@
 --extra-index-url https://backend:dc222fa6-452f-4253-a2fd-a52e7ba2e7e9@nexus.sigame.com.br/repository/pypi/simple
+heimdall-client==2.3.1
+iara-client==0.6.0
+persephone-client==2.2.0
+
 asgiref==3.5.2
 boto3==1.21.21
 flask==2.1.2
-heimdall-client==2.3.1
-httpx==0.23.0
 isort==5.10.1
-iara-client==0.6.0
 motor==3.0.0
-persephone-client==1.6.1
 strenum==0.4.8
+httpx==0.23.0
