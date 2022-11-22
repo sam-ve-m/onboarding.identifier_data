@@ -8,7 +8,9 @@ with patch.object(logging.config, "dictConfig"):
     with patch.object(Config, "__call__"):
         with patch.object(Config, "__init__", return_value=None):
             with patch.object(RepositoryEnv, "__init__", return_value=None):
-                from src.domain.exceptions.exceptions import ErrorSendingToIaraValidateCPF
+                from src.domain.exceptions.exceptions import (
+                    ErrorSendingToIaraValidateCPF,
+                )
                 from src.transports.caf.transport import BureauApiTransport
                 from iara_client import Iara
 

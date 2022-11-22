@@ -6,7 +6,6 @@ from etria_logger import Gladsheim
 
 
 class BlockListRepository(MongoDbBaseRepository):
-
     @staticmethod
     def _set_collection(mongo_client):
         database = mongo_client[config("MONGODB_POSEIDON_DATABASE_NAME")]
@@ -15,11 +14,13 @@ class BlockListRepository(MongoDbBaseRepository):
 
     @classmethod
     async def is_cpf_in_block_list(cls, cpf: str, verification_data: datetime) -> bool:
-        identifier_data_document = await cls.find_one({
-            "cpf": int(cpf),
-            "trading_date": {"$lte": verification_data},
-            "release_date": {"$gt": verification_data},
-        })
+        identifier_data_document = await cls.find_one(
+            {
+                "cpf": int(cpf),
+                "trading_date": {"$lte": verification_data},
+                "release_date": {"$gt": verification_data},
+            }
+        )
         if identifier_data_document:
             name = identifier_data_document.get("name")
             reason = identifier_data_document.get("reason")

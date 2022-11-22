@@ -1,11 +1,17 @@
 from typing import List
 
 from ..enums.types import CpfValidationStatus, UserOrigins
+from ..models.device_info import DeviceInfo
 from ..validators.user_identifier_data import UserIdentifier, TaxResidence
 
 
 class UserIdentifierDataModel:
-    def __init__(self, identifier_data_validated: UserIdentifier, unique_id: str):
+    def __init__(
+        self,
+        identifier_data_validated: UserIdentifier,
+        unique_id: str,
+        device_info: DeviceInfo,
+    ):
         self.unique_id = unique_id
         self.cpf = identifier_data_validated.user_identifier.cpf
         self.phone = identifier_data_validated.user_identifier.phone
@@ -13,6 +19,7 @@ class UserIdentifierDataModel:
         self.tax_residences = self._create_foreign_account_tax_composition(
             identifier_data_validated.tax_residences
         )
+        self.device_info = device_info
 
     @staticmethod
     def _create_foreign_account_tax_composition(
@@ -33,6 +40,8 @@ class UserIdentifierDataModel:
             "cel_phone": self.phone,
             "unique_id": self.unique_id,
             "tax_residences": self.tax_residences,
+            "device_info": self.device_info.device_info,
+            "device_id": self.device_info.device_id,
         }
         return user_identifier_template
 

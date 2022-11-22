@@ -6,7 +6,6 @@ from ..base_repository.base import MongoDbBaseRepository
 
 
 class UserRepository(MongoDbBaseRepository):
-
     @staticmethod
     def _set_collection(mongo_client: AsyncIOMotorClient) -> Collection:
         database = mongo_client[config("MONGODB_DATABASE_NAME")]
@@ -15,9 +14,7 @@ class UserRepository(MongoDbBaseRepository):
 
     @classmethod
     async def find_one_by_cpf(cls, cpf: str) -> dict:
-        identifier_data_document = await cls.find_one(
-            {"identifier_document.cpf": cpf}
-        )
+        identifier_data_document = await cls.find_one({"identifier_document.cpf": cpf})
         return identifier_data_document
 
     @classmethod

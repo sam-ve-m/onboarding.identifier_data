@@ -10,7 +10,9 @@ with patch.object(logging.config, "dictConfig"):
             with patch.object(RepositoryEnv, "__init__", return_value=None):
                 from func.src.domain.exceptions.exceptions import ErrorOnSendAuditLog
                 from func.src.transports.audit.transport import Audit
-                from tests.src.services.identifier_data.stubs import stub_identifier_model
+                from tests.src.services.identifier_data.stubs import (
+                    stub_identifier_model,
+                )
 
 
 @pytest.mark.asyncio
