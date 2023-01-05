@@ -1,5 +1,4 @@
-#!/bin/bash
 fission spec init
-fission env create --spec --name identifier-data-env --image nexus.sigame.com.br/fission-async:0.1.7 --builder nexus.sigame.com.br/fission-builder-3.8:0.0.1
-fission fn create --spec --name identifier-data-fn --env identifier-data-env --src "./func/*" --entrypoint main.user_identifier_data --executortype newdeploy --maxscale 1
-fission route create --spec --name identifier-data-rt --method PUT --url /onboarding/identifier_data --function identifier-data-fn
+fission env create --spec --name onb-br-identifier-env --image nexus.sigame.com.br/fission-onboarding-br-identifier-data:0.1.1 --poolsize 0 --version 3 --imagepullsecret "nexus-v3" --spec
+fission fn create --spec --name onb-br-identifier-fn --env onb-br-identifier-env --code fission.py --targetcpu 80 --executortype newdeploy --maxscale 3 --requestsperpod 10000 --spec
+fission route create --spec --name onb-br-identifier-rt --method PUT --url /onboarding/identifier_data --function onb-br-identifier-fn

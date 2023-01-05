@@ -2,20 +2,24 @@ apiVersion: fission.io/v1
 kind: Environment
 metadata:
   creationTimestamp: null
-  name: identifier-data-env
+  name: onb-br-identifier-env
   namespace: default
 spec:
   builder:
-    command: build
-    image: nexus.sigame.com.br/fission-builder-3.8:0.0.1
-  imagepullsecret: "nexus-v3"
+    container:
+      name: ""
+      resources: {}
+  imagepullsecret: nexus-v3
   keeparchive: false
   resources: {}
   runtime:
-    image: nexus.sigame.com.br/fission-async:0.1.7
+    container:
+      name: ""
+      resources: {}
+    image: nexus.sigame.com.br/fission-onboarding-br-identifier-data:0.1.1
     podspec:
       containers:
-        - name: identifier-data-env
+        - name: onb-br-identifier-env
           env:
             - name: ROOT_LOG_LEVEL
               value: "INFO"
