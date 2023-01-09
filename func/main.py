@@ -4,7 +4,7 @@ from etria_logger import Gladsheim
 from flask import request, Response
 from pydantic import ValidationError
 
-from src.domain.exceptions.exceptions import (
+from func.src.domain.exceptions.exceptions import (
     CpfAlreadyExists,
     ErrorOnDecodeJwt,
     ErrorOnSendAuditLog,
@@ -19,11 +19,11 @@ from src.domain.exceptions.exceptions import (
     DeviceInfoRequestFailed,
     DeviceInfoNotSupplied,
 )
-from src.domain.response.model import InternalCode, ResponseModel
-from src.domain.validators.user_identifier_data import UserIdentifier
-from src.services.jwt import JwtService
-from src.services.user_identifier_data import ServiceUserIdentifierData
-from src.transports.device_info.transport import DeviceSecurity
+from func.src.domain.response.model import InternalCode, ResponseModel
+from func.src.domain.validators.user_identifier_data import UserIdentifier
+from func.src.services.jwt import JwtService
+from func.src.services.user_identifier_data import ServiceUserIdentifierData
+from func.src.transports.device_info.transport import DeviceSecurity
 
 
 async def user_identifier_data() -> Response:

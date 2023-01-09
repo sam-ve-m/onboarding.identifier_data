@@ -1,7 +1,7 @@
 from iara_client import Iara, IaraTopics
 
-from src.domain.exceptions.exceptions import ErrorSendingToIaraValidateCPF
-from src.domain.identifier_data.model import UserIdentifierDataModel
+from func.src.domain.exceptions.exceptions import ErrorSendingToIaraValidateCPF
+from func.src.domain.identifier_data.model import UserIdentifierDataModel
 
 
 class BureauApiTransport:

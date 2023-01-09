@@ -1,35 +1,35 @@
 include:
-- ./func/*
+- fission.py
 kind: ArchiveUploadSpec
-name: func-r0ta
+name: fission-py-BiQj
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: identifier-data-fn-0e074bde-bc59-473f-b5a5-5fd3b736be6a
+  name: onb-br-identifier-fn-a6d5a8fd-a21b-4999-b265-7ecd68abca19
   namespace: default
 spec:
   deployment:
     checksum: {}
+    type: url
+    url: archive://fission-py-BiQj
   environment:
-    name: identifier-data-env
+    name: onb-br-identifier-env
     namespace: default
   source:
     checksum: {}
-    type: url
-    url: archive://func-r0ta
 status:
-  buildstatus: pending
-  lastUpdateTimestamp: "2022-07-20T03:55:17Z"
+  buildstatus: none
+  lastUpdateTimestamp: "2023-01-05T17:20:25Z"
 
 ---
 apiVersion: fission.io/v1
 kind: Function
 metadata:
   creationTimestamp: null
-  name: identifier-data-fn
+  name: onb-br-identifier-fn
   namespace: default
 spec:
   InvokeStrategy:
@@ -38,18 +38,24 @@ spec:
       MaxScale: 3
       MinScale: 1
       SpecializationTimeout: 120
-      TargetCPUPercent: 80
+      TargetCPUPercent: 0
+      hpaMetrics:
+      - resource:
+          name: cpu
+          target:
+            averageUtilization: 80
+            type: Utilization
+        type: Resource
     StrategyType: execution
   concurrency: 500
   environment:
-    name: identifier-data-env
+    name: onb-br-identifier-env
     namespace: default
   functionTimeout: 60
   idletimeout: 120
   package:
-    functionName: main.user_identifier_data
     packageref:
-      name: identifier-data-fn-0e074bde-bc59-473f-b5a5-5fd3b736be6a
+      name: onb-br-identifier-fn-a6d5a8fd-a21b-4999-b265-7ecd68abca19
       namespace: default
   requestsPerPod: 10000
   resources: {}
